@@ -58,7 +58,7 @@ public class SongData {
     public void setgName(String gName) {
         this.gName = gName;
     }
-    
+
     @Override
     public String toString(){
         return (sId +" "+ sName +" "+ timeDuration +" "+ artName +" "+ albName +" "+ gName);
