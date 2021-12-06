@@ -62,8 +62,8 @@ insert into song(sName,timeDuration,artId,albId,gId) values("pefect","00:03:40",
 
 select * from song;
 
-create view songdata as select s.sId, s.sName, s.timeDuration, art.artName, alb.albName, g.gName 
+create view songdata as select s.sId, s.sName, s.timeDuration, art.artId, alb.albId, g.gId 
 from Song s inner join Artist art on s.artId = art.artId inner join Album alb on s.albId = alb.albId
 inner join genere g on g.gId = s.gId;
 
-select * from songdata;
+select * from songsdt;
