@@ -67,9 +67,3 @@ from Song s inner join Artist art on s.artId = art.artId inner join Album alb on
 inner join genere g on g.gId = s.gId;
 
 select * from songdata1;
-
-create view songdata2 as select s.sId, s.sName, s.timeDuration, art.artId, alb.albId, g.gId
-from Song s inner join Artist art on s.artId = art.artId inner join Album alb on s.albId = alb.albId
-inner join genere g on g.gId = s.gId;
-
-select * from songdata2;
