@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SongDbOpeartion {
 
@@ -83,7 +84,7 @@ public class SongDbOpeartion {
                     "root", "root");
             String query = "insert into song(sName,timeDuration,artId,albId,gId) values(?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1,sd.getsName());
+            ps.setString(1,sd.getSName());
             ps.setString(2, sd.getTimeDuration());
             ps.setInt(3,sd.getArtId());
             ps.setInt(4,sd.getAlbId());
@@ -152,9 +153,28 @@ public class SongDbOpeartion {
         }
         return artId;
     }
-//    public List<Song> getSongsByArtist(){
-//        List<Song> filter = new ArrayList<Song>();
-//
-//        return filter;
-//    }
+
+    public List<Song> getSongsByArtist(){
+        List<Song> filterAllSong = new ArrayList<Song>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            Statement st = con.createStatement();
+            String query = "select * from songdata2";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()){
+                Song s1 = new Song(rs.getInt(1),rs.getString(2),rs.getString(3),
+                        rs.getInt(4),rs.getInt(5),rs.getInt(6));
+                filterAllSong.add(s1);
+            }
+            rs.close();
+            st.close();
+            con.close();
+        }
+        catch (Exception ex){
+            System.out.println(ex);
+        }
+        return filterAllSong;
+    }
 }

@@ -1,10 +1,11 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class Main {
 
     public static void main(String [] args) throws ParseException {
-//
+
         SongDbOpeartion sdbo = new SongDbOpeartion();
 //        int artId = sdbo.generateArtistId("Arijit Singh","M");
 //        java.util.Date dt = new SimpleDateFormat("yyyy-mm-dd").parse("2018-08-10");
@@ -15,7 +16,10 @@ public class Main {
 ////        System.out.println("Addition is " +add);
 //        int arId = sdbo.getArtistId("palak singh","F");
 //        System.out.println(arId);
-
+        List<Song> filter = sdbo.getSongsByArtist();
+        for(Song s:filter){
+            System.out.println(s);
+        }
 
 
     }

@@ -12,7 +12,7 @@ public class Song {
             this.gId=gId;
         }
 
-    public Song( String sName, String timeDuration, int artId, int albId, int gId){
+    public Song(String sName, String timeDuration, int artId, int albId, int gId){
         this.sName=sName;
         this.timeDuration=timeDuration;
         this.artId=artId;
@@ -21,19 +21,19 @@ public class Song {
     }
 
 
-        public int getsId() {
+        public int getSId() {
             return sId;
         }
 
-        public void setsId(int sId) {
+        public void setSId(int sId) {
             this.sId = sId;
         }
 
-        public String getsName() {
+        public String getSName() {
             return sName;
         }
 
-        public void setsName(String sName) {
+        public void setSName(String sName) {
             this.sName = sName;
         }
 
