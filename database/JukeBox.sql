@@ -74,8 +74,71 @@ create table Narrator(
 narId int auto_increment primary key,
 narName char(30)
 );
+alter table narrator
+auto_increment = 1001;
+insert into narrator(narName) values("Taylor");select last_insert_id();
+insert into narrator(narName) values("Valmiki");select last_insert_id();
+
+select * from narrator;
+
 
 create table ProdType(
-pId int auto_increment primary key,
+ptId int auto_increment primary key,
 typeName char(30)
 );
+alter table prodtype
+auto_increment =2001;
+
+insert into prodtype(typeName) values("sanskriti");select last_insert_id();
+select * from prodtype;
+
+create table Celebrity(
+celbId int auto_increment primary key,
+celbName char(30)
+);
+alter table celebrity
+auto_increment = 3001;
+
+insert into celebrity(celbName) values ("Amitabh");select last_insert_id();
+select * from celebrity;
+
+create table Prodcast(
+podId int auto_increment primary key,
+podName char(30),
+ptId int,
+narId int,
+celbId int,
+foreign key (ptId) references ProdType(ptId) on update cascade on delete set null,
+foreign key (narId) references Narrator(narId) on update cascade on delete set null,
+foreign key (celbId) references Celebrity(celbId) on update cascade on delete set null
+);
+alter table prodcast
+auto_increment = 4001;
+
+insert into prodcast(podName,ptId,narId,celbId) values("Story",2001,1002,3001);select last_insert_id();
+select * from prodcast;
+
+create table ProdEpisode(
+prodEId int auto_increment primary key,
+epiNo int,
+epiName char(30),
+timeDuration varchar(30),
+publishedDate date, 
+podId int,
+foreign key (podId) references Prodcast(podId) on update cascade on delete set null
+);
+
+insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(2,"Valmiki start","01:45:30",'2021-04-15',4002);select last_insert_id();
+
+alter table ProdEpisode
+auto_increment = 11000;
+
+select * from ProdEpisode;
+
+create view prodEpiData as 
+select prodep.prodEId,prodep.epiNo,prodep.epiName,prodep.timeDuration,
+pc.podName,celb.celbName,prodep.publishedDate,n.narName,p.typeName from ProdEpisode prodep 
+inner join prodcast pc on prodep.podId=pc.podId inner join celebrity celb on pc.celbId=celb.celbId
+inner join narrator n on pc.narId=n.narId inner join prodType p on pc.ptId=p.ptId;
+
+select * from prodEpiData;
