@@ -1,7 +1,10 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class SongDbOpeartion {
 
@@ -153,7 +156,7 @@ public class SongDbOpeartion {
         return artId;
     }
 
-    public List<Songdata1> getSongsByArtist(){
+    public List<Songdata1> getSongs(){
         List<Songdata1> filterAllSong = new ArrayList<Songdata1>();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -175,5 +178,14 @@ public class SongDbOpeartion {
             System.out.println(ex);
         }
         return filterAllSong;
+    }
+
+    public List<Songdata1> getSongsByArtist(List<Songdata1> filterAllSong,String name){
+
+        List<Songdata1> filterlist = filterAllSong.stream().filter(p->p.getArtName().equalsIgnoreCase(name)).
+                collect(Collectors.toList());
+        filterlist.forEach(i->System.out.println(i));
+
+        return filterlist;
     }
 }
