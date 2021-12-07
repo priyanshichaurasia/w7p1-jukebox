@@ -1,14 +1,15 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class ProdcastDbOperation {
 
-    public boolean addProdcast(String podName,String typeName,String narName,String celbName){
+    public int addProdcast(String podName,String typeName,String narName,String celbName){
         int prodTypeId = getProdTypeId(typeName);
         int narId = getNarId(narName);
         int celbId = getCelbId(celbName);
-        boolean result = false;
+        int podId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
@@ -20,10 +21,9 @@ public class ProdcastDbOperation {
             ps.setInt(3,narId);
             ps.setInt(4,celbId);
             if(ps.executeUpdate()==1){
-                result = true;
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()){
-                    int podId = rs.getInt(1);
+                    podId = rs.getInt(1);
                 }
             }
             ps.close();
@@ -32,7 +32,7 @@ public class ProdcastDbOperation {
         catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return result;
+        return podId;
     }
 
     private int getProdTypeId(String typeName){
@@ -174,6 +174,36 @@ public class ProdcastDbOperation {
             System.out.println(ex.getMessage());
         }
         return  celbId;
+    }
+
+    public boolean addProdEpisode(int epiNo,String epiName,String time,Date pubDate,String podName,String typeName,String narName,String celbName){
+        int podId = addProdcast(podName,typeName,narName,celbName);
+        boolean res = false;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            String query ="insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(?,?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1,epiNo);
+            ps.setString(2,epiName);
+            ps.setString(3,time);
+            ps.setDate(4,new java.sql.Date(pubDate.getTime()));
+            ps.setInt(5,podId);
+            if (ps.executeUpdate() == 1) {
+                res = true;
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    int prodEpiId = rs.getInt(1);
+                }
+            }
+            ps.close();
+            con.close();
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return  res;
     }
 
     public List<ProdEpiData> getProdEpiList(){

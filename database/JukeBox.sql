@@ -112,10 +112,12 @@ foreign key (ptId) references ProdType(ptId) on update cascade on delete set nul
 foreign key (narId) references Narrator(narId) on update cascade on delete set null,
 foreign key (celbId) references Celebrity(celbId) on update cascade on delete set null
 );
+
 alter table prodcast
 auto_increment = 4001;
 
 insert into prodcast(podName,ptId,narId,celbId) values("Story",2001,1002,3001);select last_insert_id();
+
 select * from prodcast;
 
 create table ProdEpisode(
@@ -128,7 +130,7 @@ podId int,
 foreign key (podId) references Prodcast(podId) on update cascade on delete set null
 );
 
-insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(2,"Valmiki start","01:45:30",'2021-04-15',4002);select last_insert_id();
+insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(2,"Valmiki start","01:45:30",'2021-04-15',4001);select last_insert_id();
 
 alter table ProdEpisode
 auto_increment = 11000;
