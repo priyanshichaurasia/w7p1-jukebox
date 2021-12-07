@@ -1,31 +1,29 @@
 import java.sql.*;
-import java.util.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SongDbOpeartion {
+public class ProdcastDbOperation {
 
-    public boolean addSong(String sName,String timedur, String artname,String gend,String albname,Date relDtate, String genname) {
-
-            int artid = getArtistId(artname,gend);
-            int albid = getAlbumId(albname,new java.sql.Date(relDtate.getTime()));
-            int genid = getGenereId(genname);
-            boolean result = false;
+    public boolean addProdcast(String podName,String typeName,String narName,String celbName){
+        int prodTypeId = getProdTypeId(typeName);
+        int narId = getNarId(narName);
+        int celbId = getCelbId(celbName);
+        boolean result = false;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "insert into song(sName,timeDuration,artId,albId,gId) values(?,?,?,?,?)";
-            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1,sName);
-            ps.setString(2, timedur);
-            ps.setInt(3,artid);
-            ps.setInt(4,albid);
-            ps.setInt(5,genid);
+            String query = "insert into prodcast(podName,ptId,narId,celbId) values(?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,podName);
+            ps.setInt(2,prodTypeId);
+            ps.setInt(3,narId);
+            ps.setInt(4,celbId);
             if(ps.executeUpdate()==1){
                 result = true;
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()){
-                    int sId = rs.getInt(1);
+                    int podId = rs.getInt(1);
                 }
             }
             ps.close();
@@ -35,174 +33,171 @@ public class SongDbOpeartion {
             System.out.println(ex.getMessage());
         }
         return result;
-
     }
-    private int getArtistId(String Artname, String gender) {
-        int artistId = 0;
+
+    private int getProdTypeId(String typeName){
+        int prodTypeId = 0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "select * from artist where artName =? and gender = ?";
+            String query = "select * from prodType where typeName =?";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, Artname);
-            ps.setString(2, gender);
+            ps.setString(1, typeName);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artistId = rs.getInt(1);
+                prodTypeId = rs.getInt(1);
             } else {
-                artistId = addArtistId(Artname, gender);
+                prodTypeId = addProdType(typeName);
             }
             ps.close();
             con.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return artistId;
+        return prodTypeId;
     }
 
-    public int addArtistId(String name, String gender){
-        int artId =0;
+    private int addProdType(String typeName){
+        int prodTypeId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "insert into artist(artName,gender) values(?,?)";
+            String query ="insert into prodtype(typeName) values(?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, name);
-            ps.setString(2, gender);
+            ps.setString(1, typeName);
             if (ps.executeUpdate() == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    artId = rs.getInt(1);
+                    prodTypeId = rs.getInt(1);
                 }
             }
             ps.close();
             con.close();
         }
-        catch (Exception ex) {
+        catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return artId;
+        return  prodTypeId;
     }
 
-    private int getAlbumId(String albname, Date releaseDate) {
-        int albId = 0;
+    private int getNarId(String narName){
+        int narId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "select * from album where albName =? and releaseDate = ?";
+            String query = "select * from prodType where typeName =?";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, albname);
-            ps.setDate(2, new java.sql.Date(releaseDate.getTime()));
+            ps.setString(1, narName);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                albId = rs.getInt(1);
+                narId = rs.getInt(1);
             } else {
-                albId = addAlbId(albname,releaseDate);
+                narId = addNarrator(narName);
             }
             ps.close();
             con.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return albId;
+        return narId;
     }
 
-    public int addAlbId(String albName, Date releaseDate){
-        int albId =0;
+    private int addNarrator(String narName){
+        int narId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "insert into album(albName,releaseDate) values(?,?)";
+            String query ="insert into narrator(narName) values(?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, albName);
-            ps.setDate(2, new java.sql.Date(releaseDate.getTime()));
+            ps.setString(1, narName);
             if (ps.executeUpdate() == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    albId = rs.getInt(1);
+                     narId= rs.getInt(1);
                 }
             }
             ps.close();
             con.close();
         }
-        catch (Exception ex) {
+        catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return albId;
+        return  narId;
     }
 
-    private int getGenereId(String gName) {
-        int gId = 0;
+    private int getCelbId(String celbName){
+        int celbId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "select * from genere where gName =? ";
+            String query = "select * from prodType where typeName =?";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, gName);
+            ps.setString(1, celbName);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                gId = rs.getInt(1);
+                celbId = rs.getInt(1);
             } else {
-                gId = addGenereId(gName);
+                celbId = addCelebrity(celbName);
             }
             ps.close();
             con.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return gId;
+        return celbId;
     }
 
-    public int addGenereId(String gName){
-        int gId =0;
+    private int addCelebrity(String celbName){
+        int celbId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query = "insert into genere(gName) values(?)";
+            String query ="insert into celebrity(celbName) values(?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, gName);
+            ps.setString(1, celbName);
             if (ps.executeUpdate() == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    gId = rs.getInt(1);
+                    celbId= rs.getInt(1);
                 }
             }
             ps.close();
             con.close();
         }
-        catch (Exception ex) {
+        catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return gId;
+        return  celbId;
     }
 
-    public List<Songdata1> getSongs(){
-        List<Songdata1> filterAllSong = new ArrayList<Songdata1>();
-        try{
+    public List<ProdEpiData> getProdEpiList(){
+        List<ProdEpiData> prodList = new ArrayList<ProdEpiData>();
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
             Statement st = con.createStatement();
-            String query = "select * from songdata1";
+            String query = "select * from prodEpiData";
             ResultSet rs = st.executeQuery(query);
-            while(rs.next()){
-                Songdata1 sd1 = new Songdata1(rs.getInt(1),rs.getString(2),rs.getString(3),
-                        rs.getString(4),rs.getString(5),rs.getString(6));
-                filterAllSong.add(sd1);
+            while (rs.next()){
+                ProdEpiData ped = new ProdEpiData(rs.getInt(1),rs.getInt(2),rs.getString(3),
+                        rs.getString(4), rs.getString(5),rs.getString(6),rs.getDate(7),
+                        rs.getString(8),rs.getString(9));
+                prodList.add(ped);
             }
             rs.close();
             st.close();
             con.close();
         }
         catch (Exception ex){
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
-        return filterAllSong;
+        return prodList;
     }
 }
