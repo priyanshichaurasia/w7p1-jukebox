@@ -1,9 +1,7 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class SongDbOpeartion {
@@ -33,7 +31,7 @@ public class SongDbOpeartion {
         return artId;
     }
 
-    public  int genersteAlbumId(String albName, Date releaseDate) {
+    public  int generateAlbumId(String albName, Date releaseDate) {
         int albId =0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -156,6 +154,103 @@ public class SongDbOpeartion {
         return artId;
     }
 
+    public int getAlbumId(String albname, Date releaseDate) {
+        int albId = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            String query = "select * from album where albName =? and releaseDate = ?";
+            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, albname);
+            ps.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                albId = rs.getInt(1);
+            } else {
+                albId = addAlbId(albname,releaseDate);
+            }
+            ps.close();
+            con.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return albId;
+    }
+
+    public int addAlbId(String albName, Date releaseDate){
+        int albId =0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            String query = "insert into album(albName,releaseDate) values(?,?)";
+            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, albName);
+            ps.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
+            if (ps.executeUpdate() == 1) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    albId = rs.getInt(1);
+                }
+            }
+            ps.close();
+            con.close();
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return albId;
+    }
+
+    public int getGenereId(String gName) {
+        int gId = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            String query = "select * from genere where gName =? ";
+            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, gName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                gId = rs.getInt(1);
+            } else {
+                gId = addGenereId(gName);
+            }
+            ps.close();
+            con.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return gId;
+    }
+
+    public int addGenereId(String gName){
+        int gId =0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            String query = "insert into genere(gName) values(?)";
+            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, gName);
+            if (ps.executeUpdate() == 1) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    gId = rs.getInt(1);
+                }
+            }
+            ps.close();
+            con.close();
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return gId;
+    }
+
+
     public List<Songdata1> getSongs(){
         List<Songdata1> filterAllSong = new ArrayList<Songdata1>();
         try{
@@ -170,6 +265,11 @@ public class SongDbOpeartion {
                         rs.getString(4),rs.getString(5),rs.getString(6));
                 filterAllSong.add(sd1);
             }
+            Consumer<Songdata1> displaySong = (list)->System.out.println(list);
+            System.out.println("List of All Songs");
+            filterAllSong.forEach(displaySong);
+            System.out.println();
+
             rs.close();
             st.close();
             con.close();
@@ -183,8 +283,10 @@ public class SongDbOpeartion {
     public List<Songdata1> getSongsByArtist(List<Songdata1> filterAllSong,String name){
 
         List<Songdata1> filterlist = filterAllSong.stream().filter(p->p.getArtName().equalsIgnoreCase(name)).
-                collect(Collectors.toList());
+                sorted((s1,s2)->s1.getsName().compareTo(s2.getsName())).collect(Collectors.toList());
+        System.out.println("List of Songs filter By Artitst Name");
         filterlist.forEach(i->System.out.println(i));
+//        Collection.sort(filterlist);
 
         return filterlist;
     }

@@ -1,6 +1,7 @@
 create database JukeBox;
 use jukebox;
 
+-- task1
 create table Genere(
 gId int auto_increment primary key,
 gName char(30) not null
@@ -67,3 +68,14 @@ from Song s inner join Artist art on s.artId = art.artId inner join Album alb on
 inner join genere g on g.gId = s.gId;
 
 select * from songdata1;
+
+-- task2
+create table Narrator(
+narId int auto_increment primary key,
+narName char(30)
+);
+
+create table ProdType(
+pId int auto_increment primary key,
+typeName char(30)
+);

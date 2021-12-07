@@ -1,5 +1,5 @@
 
-public class Songdata1 {
+public class Songdata1{
 
     private int sId;
     private String sName, timeDuration,artName,albName,gName;
