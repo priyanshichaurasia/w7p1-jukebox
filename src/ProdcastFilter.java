@@ -1,22 +1,31 @@
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ProdcastFilter {
 
     public List<ProdEpiData> getByCelebrity(List<ProdEpiData> prodList,String celbName){
+        List<ProdEpiData> searchByCelbName = new ArrayList<ProdEpiData>();
 
-        List<ProdEpiData> filterByCelebrity=prodList.stream().filter(p->p.getCelbName().equalsIgnoreCase(celbName)).
-                sorted(Comparator.comparing(ProdEpiData::getCelbName)).collect(Collectors.toList());
-        return filterByCelebrity;
+        Optional filterByCelebrity=prodList.stream().filter(p->p.getCelbName().equalsIgnoreCase(celbName)).
+                sorted(Comparator.comparing(ProdEpiData::getCelbName)).findAny();
+        if(filterByCelebrity.isPresent()){
+            searchByCelbName = prodList.stream().filter(p->p.getCelbName().equalsIgnoreCase(celbName)).
+                    sorted(Comparator.comparing(ProdEpiData::getCelbName)).collect(Collectors.toList());
+        }
+        return searchByCelbName;
     }
 
     public List<ProdEpiData> getByPubDate(List<ProdEpiData> prodList, Date publishedDate){
-        List<ProdEpiData> filterByDate = prodList.stream().filter(p->p.getPublishedDate().equals(publishedDate)).
-                sorted(Comparator.comparing(ProdEpiData::getCelbName)).collect(Collectors.toList());
-        return filterByDate;
+        List<ProdEpiData> searchByPubDate = new ArrayList<ProdEpiData>();
+
+         Optional filterByDate = prodList.stream().filter(p->p.getPublishedDate().equals(publishedDate)).
+                sorted(Comparator.comparing(ProdEpiData::getCelbName)).findAny();
+         if(filterByDate.isPresent()){
+             searchByPubDate = prodList.stream().filter(p->p.getPublishedDate().equals(publishedDate)).
+                     sorted(Comparator.comparing(ProdEpiData::getCelbName)).collect(Collectors.toList());
+         }
+        return searchByPubDate;
     }
 
     public void display (List<ProdEpiData> displayList){

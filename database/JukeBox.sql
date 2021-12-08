@@ -158,6 +158,25 @@ create table Playlistcontent(
 contId int auto_increment primary key,
 playId int,
 listDuration varchar(15),
-trackId int
+trackId int,
+foreign key (playId) references playlist(playId) on update cascade on delete set null
+-- foreign key (trackId) references song(sId) on update cascade on delete set null,
+-- foreign key (trackId) references ProdEpisode(prodEId) on update cascade on delete set null
 );
+drop table playlistcontent;
 
+insert into playlistcontent(playId,listDuration,trackId) values(31000,"00:14:27",403);
+insert into playlistcontent(playId,listDuration,trackId) values(31000,"00:14:27",11003);
+
+select * from song;
+select * from ProdEpisode;
+select * from Playlistcontent;
+
+
+-- view table for playlist
+create view playlistcontdata as 
+select pl.playName,plc.listDuration,so.sName,so.timeDuration,pe.epiName,pe.timeDuration from playlistcontent plc 
+join playlist pl on plc.playId=pl.playId join song so on so.sId=plc.trackId
+join prodEpisode pe on pe.prodEId=plc.trackId;
+
+select * from playlistcontdata;
