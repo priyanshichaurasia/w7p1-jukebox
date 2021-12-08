@@ -144,3 +144,20 @@ inner join prodcast pc on prodep.podId=pc.podId inner join celebrity celb on pc.
 inner join narrator n on pc.narId=n.narId inner join prodType p on pc.ptId=p.ptId;
 
 select * from prodEpiData;
+
+-- task3
+create table Playlist(
+playId int auto_increment primary key,
+playName varchar(50)
+);
+alter table playlist auto_increment = 31000;
+insert into playlist(playName) values("10 most played"),("Workout Music");
+select * from playlist;
+
+create table Playlistcontent(
+contId int auto_increment primary key,
+playId int,
+listDuration varchar(15),
+trackId int
+);
+

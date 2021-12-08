@@ -35,6 +35,31 @@ public class ProdcastDbOperation {
         return podId;
     }
 
+    private int getpodId(String podName,String typeName,String nName,String cName){
+        int podId=0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            String query = "select * from prodcast where podName =?";
+            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,podName);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                podId = rs.getInt(1);
+            }
+            else {
+                podId = addProdcast(podName,typeName,nName,cName);
+            }
+            ps.close();
+            con.close();
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return podId;
+    }
+
     private int getProdTypeId(String typeName){
         int prodTypeId = 0;
         try {
@@ -177,7 +202,7 @@ public class ProdcastDbOperation {
     }
 
     public boolean addProdEpisode(int epiNo,String epiName,String time,Date pubDate,String podName,String typeName,String narName,String celbName){
-        int podId = addProdcast(podName,typeName,narName,celbName);
+        int podId = getpodId(podName,typeName,narName,celbName);
         boolean res = false;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
