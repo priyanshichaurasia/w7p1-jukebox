@@ -4,12 +4,11 @@ import java.util.*;
 
 public class SongDbOpeartion {
 
-    public boolean addSong(String sName,String timedur, String artname,String gend,String albname,Date relDtate, String genname) {
-
+    public int addSong(String sName,String timedur, String artname,String gend,String albname,Date relDtate, String genname) {
+            int sId=0;
             int artid = getArtistId(artname,gend);
             int albid = getAlbumId(albname,new java.sql.Date(relDtate.getTime()));
             int genid = getGenereId(genname);
-            boolean result = false;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
@@ -22,10 +21,9 @@ public class SongDbOpeartion {
             ps.setInt(4,albid);
             ps.setInt(5,genid);
             if(ps.executeUpdate()==1){
-                result = true;
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()){
-                    int sId = rs.getInt(1);
+                    sId = rs.getInt(1);
                 }
             }
             ps.close();
@@ -34,7 +32,7 @@ public class SongDbOpeartion {
         catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return result;
+        return sId;
 
     }
     private int getArtistId(String Artname, String gender) {

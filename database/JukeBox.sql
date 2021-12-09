@@ -129,6 +129,11 @@ publishedDate date,
 podId int,
 foreign key (podId) references Prodcast(podId) on update cascade on delete set null
 );
+alter table prodEpisode
+modify column epiName char(60);
+
+alter table prodEpisode
+rename column timeDuration to epiTime;
 
 insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(2,"Valmiki start","01:45:30",'2021-04-15',4001);select last_insert_id();
 
@@ -160,23 +165,27 @@ playId int,
 listDuration varchar(15),
 trackId int,
 foreign key (playId) references playlist(playId) on update cascade on delete set null
--- foreign key (trackId) references song(sId) on update cascade on delete set null,
--- foreign key (trackId) references ProdEpisode(prodEId) on update cascade on delete set null
 );
 drop table playlistcontent;
-
 insert into playlistcontent(playId,listDuration,trackId) values(31000,"00:14:27",403);
-insert into playlistcontent(playId,listDuration,trackId) values(31000,"00:14:27",11003);
+insert into playlistcontent(playId,listDuration,trackId) values(31001,"00:14:27",11003);
 
 select * from song;
 select * from ProdEpisode;
 select * from Playlistcontent;
 
-
+-- episode int, string, string, --,--,string, string
+-- song int, string, string, string, string, -- , --
 -- view table for playlist
-create view playlistcontdata as 
-select pl.playName,plc.listDuration,so.sName,so.timeDuration,pe.epiName,pe.timeDuration from playlistcontent plc 
-join playlist pl on plc.playId=pl.playId join song so on so.sId=plc.trackId
-join prodEpisode pe on pe.prodEId=plc.trackId;
+create view playlistcontdata1 as 
+select plc.contId,pl.playName,plc.listDuration,trackid,s.sName,s.timeDuration,pe.epiName,pe.epitime
+from playlist pl join playlistcontent plc on pl.playId=plc.playId
+left outer join song s on plc.trackId=s.sId left outer join ProdEpisode pe on plc.trackId=pe.prodEId;
 
+select * from playlist;
 select * from playlistcontdata;
+
+
+select * from playlistcontdata1;
+-- song :  1,2,3,4,5
+-- epi - 1,2,3,6,7

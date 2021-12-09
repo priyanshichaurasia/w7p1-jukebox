@@ -201,14 +201,14 @@ public class ProdcastDbOperation {
         return  celbId;
     }
 
-    public boolean addProdEpisode(int epiNo,String epiName,String time,Date pubDate,String podName,String typeName,String narName,String celbName){
+    public int addProdEpisode(int epiNo,String epiName,String time,Date pubDate,String podName,String typeName,String narName,String celbName){
         int podId = getpodId(podName,typeName,narName,celbName);
-        boolean res = false;
+        int prodEpiId=0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
-            String query ="insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(?,?,?,?,?)";
+            String query ="insert into prodEpisode(epiNo,epiName,epiTime,publishedDate,podId) values(?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1,epiNo);
             ps.setString(2,epiName);
@@ -216,10 +216,9 @@ public class ProdcastDbOperation {
             ps.setDate(4,new java.sql.Date(pubDate.getTime()));
             ps.setInt(5,podId);
             if (ps.executeUpdate() == 1) {
-                res = true;
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    int prodEpiId = rs.getInt(1);
+                    prodEpiId = rs.getInt(1);
                 }
             }
             ps.close();
@@ -228,7 +227,7 @@ public class ProdcastDbOperation {
         catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return  res;
+        return prodEpiId;
     }
 
     public List<ProdEpiData> getProdEpiList(){

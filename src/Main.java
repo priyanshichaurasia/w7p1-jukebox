@@ -14,14 +14,15 @@ public class Main {
         List<ProdEpiData> masterdata2 = pcdbo.getProdEpiList();
         ProdcastFilter pcf = new ProdcastFilter();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the Option You Want to Select");
-        int choice = sc.nextInt();
-        sc.nextLine();
+        int choice=0;
         do {
-            System.out.println("1.View All Song List\n2.To Add Song\n3.Filter Songs By SongName\n4.Filter Songs By Artist Name\n" +
-                    "5.Filter Songs By Album Name\n6.Filter Songs By Genere Name\n7.View Prodcast\n8.Add Prodcast\n" +
-                    "9.Filter Prodcast By Celebrity Name\n10.Filter Prodcast By Published Date");
-
+            System.out.println("Enter the Option You Want to Select");
+            System.out.println("1.View All Song List     2.To Add Song     3.Filter Songs By SongName     " +
+                    "4.Filter Songs By Artist Name     5.Filter Songs By Album Name\n6.Filter Songs By Genere Name" +
+                    "     7.View Prodcast     8.Add Prodcast     " + "9.Filter Prodcast By Celebrity Name     " +
+                    "10.Filter Prodcast By Published Date");
+            choice = sc.nextInt();
+            sc.nextLine();
             switch (choice) {
                 case 1:
                     masterdata = sdbo.getSongs();
@@ -44,8 +45,8 @@ public class Main {
                     java.util.Date dt1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
                     System.out.println("Enter the genere name");
                     String genName = sc.nextLine();
-                    boolean add = sdbo.addSong(songName, duration, artName, gender, albName, dt1, genName);
-                    System.out.println("Addition is " + add);
+                    int add = sdbo.addSong(songName, duration, artName, gender, albName, dt1, genName);
+                    System.out.println("Addition is succesful your song Id is: " + add);
                     break;
 
                 case 3:
@@ -99,8 +100,8 @@ public class Main {
                     String publishdDate = sc.nextLine();
                     java.util.Date pubshdDt = new SimpleDateFormat("yyyy-MM-dd").parse(publishdDate);
                     int prod = pcdbo.addProdcast(podName, prodType, narName, celbName);
-                    boolean epiadd = pcdbo.addProdEpisode(episodeNo, epiName, time, pubshdDt, podName, prodType, narName, celbName);
-                    System.out.println("Addition is " + epiadd + " Your Prodcast Id Is " + prod);
+                    int epi_add = pcdbo.addProdEpisode(episodeNo, epiName, time, pubshdDt, podName, prodType, narName, celbName);
+                    System.out.println("Addition is done your episode id: " + epi_add + " Your Prodcast Id Is " + prod);
                     break;
                 case 9:
                     System.out.println("Enter the Celebrity Name To Search");
@@ -115,12 +116,8 @@ public class Main {
                     List<ProdEpiData> filterByPubDate = pcf.getByPubDate(masterdata2, pDate);
                     pcf.display(filterByPubDate);
                     break;
-                case 11:
-                    System.out.println("Exit from Menu Choice");
-                    break;
             }
         }
-        while (choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5 || choice == 6 || choice == 7
-                    || choice == 8 || choice == 9 || choice == 10) ;
+        while (choice ==2) ;
     }
 }
