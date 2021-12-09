@@ -60,8 +60,16 @@ public class Songdata1{
     public void setgName(String gName) {
         this.gName = gName;
     }
+
     @Override
-    public String toString(){
-        return (sId +" , "+ sName +" , "+ timeDuration +" , "+ artName +" , "+ albName +" , "+ gName);
+    public String toString() {
+        return "Songdata1{" +
+                "sId=" + sId +
+                ", sName='" + sName + '\'' +
+                ", timeDuration='" + timeDuration + '\'' +
+                ", artName='" + artName + '\'' +
+                ", albName='" + albName + '\'' +
+                ", gName='" + gName + '\'' +
+                '}';
     }
 }

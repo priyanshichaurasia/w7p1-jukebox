@@ -34,8 +34,13 @@ public class PlaylistContent {
     public void setListDuration(String listDuration) {
         this.listDuration = listDuration;
     }
+
     @Override
-    public String toString(){
-        return (contId +" , "+ PlayName +" , "+ listDuration);
+    public String toString() {
+        return "PlaylistContent{" +
+                "contId=" + contId +
+                ", PlayName='" + PlayName + '\'' +
+                ", listDuration='" + listDuration + '\'' +
+                '}';
     }
 }

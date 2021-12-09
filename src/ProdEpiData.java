@@ -92,8 +92,17 @@ public class ProdEpiData {
     }
 
     @Override
-    public String toString(){
-        return (prodEId +" , "+ epiNo +" , "+ epiName +" , "+ timeDuration +" , "+ podName +" , "+ celbName
-                +" , "+ publishedDate +" , "+ narName +" , "+ typeName);
+    public String toString() {
+        return "ProdEpiData{" +
+                "prodEId=" + prodEId +
+                ", epiNo=" + epiNo +
+                ", epiName='" + epiName + '\'' +
+                ", timeDuration='" + timeDuration + '\'' +
+                ", celbName='" + celbName + '\'' +
+                ", podName='" + podName + '\'' +
+                ", narName='" + narName + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", publishedDate=" + publishedDate +
+                '}';
     }
 }

@@ -29,9 +29,10 @@ public class ProdEpisodeType extends PlaylistContent{
     }
 
     @Override
-    public String toString(){
-        return (super.toString()+" , "+ epiName+" , "+ epiTime);
+    public String toString() {
+        return super.toString()+"  "+"ProdEpisodeType{" +
+                "epiName='" + epiName + '\'' +
+                ", epiTime='" + epiTime + '\'' +
+                '}';
     }
-
-
 }

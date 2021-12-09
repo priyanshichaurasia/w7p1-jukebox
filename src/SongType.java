@@ -28,7 +28,10 @@ public class SongType extends PlaylistContent {
     }
 
     @Override
-    public String toString(){
-        return (super.toString()+" , "+sName+" , "+sTime);
+    public String toString() {
+        return super.toString()+"  "+"SongType{" +
+                "sName='" + sName + '\'' +
+                ", sTime='" + sTime + '\'' +
+                '}';
     }
 }
