@@ -13,6 +13,9 @@ public class ProdcastFilter {
             searchByCelbName = prodList.stream().filter(p->p.getCelbName().equalsIgnoreCase(celbName)).
                     sorted(Comparator.comparing(ProdEpiData::getCelbName)).collect(Collectors.toList());
         }
+        else{
+            System.out.println("No Record Found");
+        }
         return searchByCelbName;
     }
 
@@ -24,6 +27,9 @@ public class ProdcastFilter {
          if(filterByDate.isPresent()){
              searchByPubDate = prodList.stream().filter(p->p.getPublishedDate().equals(publishedDate)).
                      sorted(Comparator.comparing(ProdEpiData::getCelbName)).collect(Collectors.toList());
+         }
+         else{
+             System.out.println("No Record Found");
          }
         return searchByPubDate;
     }

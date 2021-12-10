@@ -150,9 +150,31 @@ public class PlayListDbOperation {
         }
         return data;
     }
-//    public void display(List<PlaylistContent> disp){
-//        for(PlaylistContent plc: disp){
-//            System.out.println(plc);
-//        }
-//    }
+
+    public List<SongType> getSongPlayListCont(){
+        List<SongType> song = new ArrayList<SongType>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
+                    "root", "root");
+            //-- song int, string, string, string, string, -- , --
+            Statement st = con.createStatement();
+            String query = "select * from playlistcontdata1";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                if(rs.getString(4)!= null){
+                    SongType st1 = new SongType(rs.getInt(1),rs.getString(2),rs.getString(3),
+                            rs.getString(4),rs.getString(5));
+                    song.add(st1);
+                }
+            }
+            rs.close();
+            st.close();
+            con.close();
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return song;
+    }
+
 }

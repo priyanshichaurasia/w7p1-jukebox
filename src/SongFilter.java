@@ -17,6 +17,9 @@ public class SongFilter {
             searchBysName = filterAllSong.stream().filter(p->p.getsName().equalsIgnoreCase(songName)).
                     sorted(Comparator.comparing(Songdata1::getsName)).collect(Collectors.toList());
         }
+        else{
+            System.out.println("No Record Found");
+        }
         return searchBysName;
     }
 
@@ -28,6 +31,9 @@ public class SongFilter {
         if(filterlist.isPresent()){
             searchByArtName = filterAllSong.stream().filter(p->p.getArtName().equalsIgnoreCase(artName)).
                     sorted(Comparator.comparing(Songdata1::getArtName)).collect(Collectors.toList());
+        }
+        else{
+            System.out.println("No Record Found");
         }
         return searchByArtName;
     }
@@ -41,6 +47,9 @@ public class SongFilter {
             searchByAlbName = filterAllSong.stream().filter(p->p.getAlbName().equalsIgnoreCase(albName)).
                     sorted(Comparator.comparing(Songdata1::getAlbName)).collect(Collectors.toList());
         }
+        else{
+            System.out.println("No Record Found");
+        }
         return searchByAlbName;
     }
 
@@ -51,6 +60,9 @@ public class SongFilter {
         if(filterGenere.isPresent()){
             searchByGenName = filterAllSong.stream().filter(p->p.getgName().equalsIgnoreCase(gName)).
                     sorted(Comparator.comparing(Songdata1::getsName)).collect(Collectors.toList());
+        }
+        else{
+            System.out.println("No Record Found");
         }
         return  searchByGenName;
     }

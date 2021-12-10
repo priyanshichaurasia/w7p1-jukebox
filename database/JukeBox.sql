@@ -142,13 +142,13 @@ auto_increment = 11000;
 
 select * from ProdEpisode;
 
-create view prodEpiData as 
-select prodep.prodEId,prodep.epiNo,prodep.epiName,prodep.timeDuration,
+create view prodEpiData2 as 
+select prodep.prodEId,prodep.epiNo,prodep.epiName,prodep.epiTime,
 pc.podName,celb.celbName,prodep.publishedDate,n.narName,p.typeName from ProdEpisode prodep 
 inner join prodcast pc on prodep.podId=pc.podId inner join celebrity celb on pc.celbId=celb.celbId
 inner join narrator n on pc.narId=n.narId inner join prodType p on pc.ptId=p.ptId;
 
-select * from prodEpiData;
+select * from prodEpiData2;
 
 -- task3
 create table Playlist(
@@ -184,7 +184,6 @@ left outer join song s on plc.trackId=s.sId left outer join ProdEpisode pe on pl
 
 select * from playlist;
 select * from playlistcontdata;
-
 
 select * from playlistcontdata1;
 -- song :  1,2,3,4,5

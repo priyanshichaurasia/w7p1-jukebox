@@ -237,7 +237,7 @@ public class ProdcastDbOperation {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JukeBox",
                     "root", "root");
             Statement st = con.createStatement();
-            String query = "select * from prodEpiData";
+            String query = "select * from prodEpiData2";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()){
                 ProdEpiData ped = new ProdEpiData(rs.getInt(1),rs.getInt(2),rs.getString(3),

@@ -8,13 +8,14 @@ public class PlaylistMain {
 
         PlayListDbOperation pldbo = new PlayListDbOperation();
         List<PlaylistContent> masterdata = pldbo.getAllPlayListCont();
+        List<SongType> songfilter = pldbo.getSongPlayListCont();
         PlayListFilter plf = new PlayListFilter();
         Scanner sc = new Scanner(System.in);
         int choice=0;
         do {
             System.out.println("Enter the Option You Want to Select");
             System.out.println("1.View All PlayList    2.Add in PlayList By Song Id    3.Add in PlayList By Prodcast Episode " +
-                    "Id    4.Add By Song Name    5.Filter By PlayName");
+                    "Id    4.Add By Song Name    5.Filter By PlayName    6.Filter By Song Name");
             choice = sc.nextInt();
             sc.nextLine();
             switch (choice) {
@@ -85,6 +86,12 @@ public class PlaylistMain {
                     String pName = sc.nextLine();
                     List<PlaylistContent> filterBypName =plf.getByPlayName(masterdata,pName);
                     plf.display(filterBypName);
+                    break;
+                case 6:
+                    System.out.println("Enter the Song Name To Search");
+                    String sName = sc.nextLine();
+                    List<SongType> filterBySName =plf.getBySongName(songfilter,sName);
+                    plf.displaySong(filterBySName);
                     break;
 
                 default:
