@@ -15,7 +15,7 @@ public class PlaylistMain {
         do {
             System.out.println("Enter the Option You Want to Select");
             System.out.println("1.View All PlayList    2.Add in PlayList By Song Id    3.Add in PlayList By Prodcast Episode " +
-                    "Id    4.Add By Song Name    5.Filter By PlayName    6.Filter By Song Name");
+                    "Id    4.Add By Song Name    5.Filter By PlayName    6.Filter By Song Name    7.To Exit");
             choice = sc.nextInt();
             sc.nextLine();
             switch (choice) {
@@ -93,11 +93,14 @@ public class PlaylistMain {
                     List<SongType> filterBySName =plf.getBySongName(songfilter,sName);
                     plf.displaySong(filterBySName);
                     break;
+                case 7:
+                    System.out.println("Exit");
+                    break;
 
                 default:
                     System.out.println("Invalid Choice");
             }
         }
-        while (choice==1);
+        while (choice!=7);
     }
 }

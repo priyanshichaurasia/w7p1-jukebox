@@ -24,9 +24,9 @@ public class PlayListFilter {
     public List<SongType> getBySongName(List<SongType> playList, String songName){
         List<SongType> searchBySongName = new ArrayList<SongType>();
 
-        Optional filterByCelebrity=playList.stream().filter(p->p.getsName().equalsIgnoreCase(songName)).
+        Optional filterBySong=playList.stream().filter(p->p.getsName().equalsIgnoreCase(songName)).
                 sorted(Comparator.comparing(SongType::getsName)).findAny();
-        if(filterByCelebrity.isPresent()){
+        if(filterBySong.isPresent()){
             searchBySongName = playList.stream().filter(p->p.getsName().equalsIgnoreCase(songName)).
                     sorted(Comparator.comparing(SongType::getsName)).collect(Collectors.toList());
         }

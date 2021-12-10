@@ -20,7 +20,7 @@ public class Main {
             System.out.println("1.View All Song List     2.To Add Song     3.Filter Songs By SongName     " +
                     "4.Filter Songs By Artist Name     5.Filter Songs By Album Name\n6.Filter Songs By Genere Name" +
                     "     7.View Prodcast     8.Add Prodcast     " + "9.Filter Prodcast By Celebrity Name     " +
-                    "10.Filter Prodcast By Published Date");
+                    "10.Filter Prodcast By Published Date     11.To Exit");
             choice = sc.nextInt();
             sc.nextLine();
             switch (choice) {
@@ -116,8 +116,14 @@ public class Main {
                     List<ProdEpiData> filterByPubDate = pcf.getByPubDate(masterdata2, pDate);
                     pcf.display(filterByPubDate);
                     break;
+                case 11:
+                    System.out.println("Exit");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice");
             }
         }
-        while (choice ==2) ;
+        while (choice!=11) ;
     }
 }
