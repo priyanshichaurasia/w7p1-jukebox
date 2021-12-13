@@ -8,37 +8,25 @@ import java.util.Scanner;
 
 public class Media {
     int index=0;
-     List<String> names;
+    List<String> names;
 
-//    public Media(List<PlaylistContent> playlist,String path){ // receive playlist as paramter  (playlist)
-//         names = new ArrayList<String>();
-//        for(PlaylistContent pc: playlist) {
-//            if(pc instanceof SongType){
-//                names.add(path+((SongType)pc).getsName());// D:\\prjct\\JukeBox\\w7p1-jukebox\\music+....+.wav
-//                System.out.println(names);
-//            }
-//            else{
-//                names.add(path+((ProdEpisodeType)pc).getEpiName());
-//            }
-//        }
-//    } "D:\prjct\JukeBox\w7p1-jukebox\music\avii.wav"
-
-    public Media(){ // receive playlist as paramter  (playlist)
+    public Media(){
     }
-    public void play(List<PlaylistContent> playlist,String path) {
+    public void play(List<PlaylistContent> playlist,String path, String plname) {
         try {
             names = new ArrayList<String>();
             for(PlaylistContent pc: playlist) {
-                if(pc instanceof SongType){
-                    names.add(path+((SongType)pc).getsName()+".wav");// D:\\prjct\\JukeBox\\w7p1-jukebox\\music+....+.wav
-                    System.out.println(names);
-                }
-                else{
-                    names.add(path+((ProdEpisodeType)pc).getEpiName()+".wav");
+                if (pc.getPlayName().equalsIgnoreCase(plname)){
+                    if (pc instanceof SongType) {
+                        names.add(path + ((SongType) pc).getsName() + ".wav");
+                        System.out.println(((SongType) pc).getsName());
+                    } else {
+                        names.add(path + ((ProdEpisodeType) pc).getEpiName() + ".wav");
+                        System.out.println(((ProdEpisodeType)pc).getEpiName());
+                    }
                 }
             }
-
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(names.get(index)));
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(names.get(index)).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
             Scanner sc = new Scanner(System.in);
@@ -56,13 +44,13 @@ public class Media {
                     case ("R") : clip.setMicrosecondPosition(0);
                     break;
                     case ("N"): clip.stop();
-                        audioStream = AudioSystem.getAudioInputStream(new File(names.get(++index)));
+                        audioStream = AudioSystem.getAudioInputStream(new File(names.get(++index)).getAbsoluteFile());
                         clip = AudioSystem.getClip();
                         clip.open(audioStream);
                         clip.start();
                         break;
                     case ("X"): clip.stop();
-                        audioStream = AudioSystem.getAudioInputStream(new File(names.get(--index)));
+                        audioStream = AudioSystem.getAudioInputStream(new File(names.get(--index)).getAbsoluteFile());
                         clip = AudioSystem.getClip();
                         clip.open(audioStream);
                         clip.start();
@@ -77,6 +65,5 @@ public class Media {
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Error");
         }
-
     }
 }

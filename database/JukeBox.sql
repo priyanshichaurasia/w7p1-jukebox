@@ -78,6 +78,7 @@ alter table narrator
 auto_increment = 1001;
 insert into narrator(narName) values("Taylor");select last_insert_id();
 insert into narrator(narName) values("Valmiki");select last_insert_id();
+insert into narrator(narName) values("Lisa");
 
 select * from narrator;
 
@@ -90,6 +91,7 @@ alter table prodtype
 auto_increment =2001;
 
 insert into prodtype(typeName) values("sanskriti");select last_insert_id();
+insert into prodtype(typeName) values("ted talks");select last_insert_id();
 select * from prodtype;
 
 create table Celebrity(
@@ -100,6 +102,7 @@ alter table celebrity
 auto_increment = 3001;
 
 insert into celebrity(celbName) values ("Amitabh");select last_insert_id();
+insert into celebrity(celbName) values("lisa");select last_insert_id();
 select * from celebrity;
 
 create table Prodcast(
@@ -117,6 +120,7 @@ alter table prodcast
 auto_increment = 4001;
 
 insert into prodcast(podName,ptId,narId,celbId) values("Story",2001,1002,3001);select last_insert_id();
+insert into prodcast(podName,ptId,narId,celbId) values("talkshow",2009,1160,3159);select last_insert_id();
 
 select * from prodcast;
 
@@ -136,7 +140,7 @@ alter table prodEpisode
 rename column timeDuration to epiTime;
 
 insert into prodEpisode(epiNo,epiName,timeDuration,publishedDate,podId) values(2,"Valmiki start","01:45:30",'2021-04-15',4001);select last_insert_id();
-
+insert into prodEpisode(epiNo,epiName,epiTime,publishedDate,podId) values(1,"awarness","00:45:10",'2021-09-18',4005);select last_insert_id();
 alter table ProdEpisode
 auto_increment = 11000;
 
@@ -169,6 +173,7 @@ foreign key (playId) references playlist(playId) on update cascade on delete set
 drop table playlistcontent;
 insert into playlistcontent(playId,listDuration,trackId) values(31000,"00:14:27",403);
 insert into playlistcontent(playId,listDuration,trackId) values(31001,"00:14:27",11003);
+insert into playlistcontent(playId,listDuration,trackId) values(31010,"01:09:50",11004);
 
 select * from song;
 select * from ProdEpisode;
@@ -183,7 +188,6 @@ from playlist pl join playlistcontent plc on pl.playId=plc.playId
 left outer join song s on plc.trackId=s.sId left outer join ProdEpisode pe on plc.trackId=pe.prodEId;
 
 select * from playlist;
-select * from playlistcontdata;
 
 select * from playlistcontdata1;
 -- song :  1,2,3,4,5
